@@ -12,7 +12,7 @@ namespace GA.GArkanoid
 			private set;
 		}
 
-		public sealed override void _Ready()
+		public GameManager()
 		{
 			GD.Print("Initializing Game Manager");
 			if (Instance == null)
@@ -25,15 +25,17 @@ namespace GA.GArkanoid
 				QueueFree();
 				return;
 			}
-
-			Initialize();
 		}
 		#endregion
 
 		[Signal]
 		public delegate void ScoreChangedEventHandler(int score);
 
+		[Signal]
+		public delegate void LivesChangedEventHandler(int lives);
+
 		private int _score = 0;
+		private int _lives = 3;
 
 		public int Score
 		{
@@ -46,8 +48,18 @@ namespace GA.GArkanoid
 			}
 		}
 
+		public int Lives
+		{
+			get { return _lives; }
+			private set
+			{
+				_lives = Mathf.Clamp(value, 0, Config.MaxLives);
+				EmitSignal(SignalName.LivesChanged, _lives);
+				GD.Print($"Lives changed to {_lives}");
+			}
+		}
 
-		protected virtual void Initialize()
+		public override void _Ready()
 		{
 			GD.Print("Game Manager initialized!");
 		}
@@ -68,6 +80,16 @@ namespace GA.GArkanoid
 			// }
 			// Same as above
 			// scoreAddedCallback?.Invoke(scoreToAdd);
+		}
+
+		public void AddLife()
+		{
+			Lives++;
+		}
+
+		public void RemoveLife()
+		{
+			Lives--;
 		}
 	}
 }

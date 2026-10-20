@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://7hjos0nh0r2p" path="res://Code/Level.cs" id="1_bk2yi"]
 [ext_resource type="PackedScene" uid="uid://bp0blw1rlmauk" path="res://Scenes/Paddle.tscn" id="1_echjq"]
 [ext_resource type="Texture2D" uid="uid://d5sxmeudhavq" path="res://Art/32/vertical.png" id="3_65pnq"]
+[ext_resource type="Script" uid="uid://drn4hnd6n04el" path="res://Code/Level/Wall.cs" id="3_y1810"]
 [ext_resource type="Texture2D" uid="uid://dum040065uot6" path="res://Art/32/corner.png" id="4_5lnup"]
 [ext_resource type="Texture2D" uid="uid://fwxqe2cvjkhc" path="res://Art/32/horizontal.png" id="5_l0mwj"]
 [ext_resource type="Script" uid="uid://cfty87v1cqbdo" path="res://Code/Testing/ScoreTest.cs" id="7_4nh8f"]
@@ -29,6 +30,7 @@ _controlMode = 1
 [node name="Left" type="StaticBody2D" parent="Bounds" unique_id=391772504]
 position = Vector2(16, 48)
 collision_layer = 4
+script = ExtResource("3_y1810")
 
 [node name="Sprite2D" type="Sprite2D" parent="Bounds/Left" unique_id=1250796351]
 position = Vector2(0, 132.00002)
@@ -42,6 +44,7 @@ shape = SubResource("RectangleShape2D_lbokr")
 [node name="Right" type="StaticBody2D" parent="Bounds" unique_id=338520912]
 position = Vector2(624, 48)
 collision_layer = 4
+script = ExtResource("3_y1810")
 
 [node name="Sprite2D" type="Sprite2D" parent="Bounds/Right" unique_id=833680237]
 position = Vector2(0, 132.00002)
@@ -71,6 +74,7 @@ texture = ExtResource("4_5lnup")
 [node name="Top" type="StaticBody2D" parent="Bounds" unique_id=1896585725]
 position = Vector2(48, 16)
 collision_layer = 4
+script = ExtResource("3_y1810")
 
 [node name="Sprite2D" type="Sprite2D" parent="Bounds/Top" unique_id=487481119]
 position = Vector2(271.99997, 0)
@@ -84,6 +88,8 @@ shape = SubResource("RectangleShape2D_1vj35")
 [node name="Bottom" type="StaticBody2D" parent="Bounds" unique_id=267721291]
 position = Vector2(48, 344)
 collision_layer = 4
+script = ExtResource("3_y1810")
+IsHazard = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Bounds/Bottom" unique_id=1089658029]
 position = Vector2(271.99997, 0)

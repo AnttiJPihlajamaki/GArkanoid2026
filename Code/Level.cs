@@ -1,6 +1,7 @@
 using Godot;
 using GA.Common;
 using System.Collections.Generic;
+using System;
 
 namespace GA.GArkanoid
 {
@@ -38,7 +39,29 @@ namespace GA.GArkanoid
 			}
 		}
 
+		override public void _EnterTree()
+		{
+			GameManager.Instance.LivesChanged += OnLivesChanged;
+		}
 
+		public override void _ExitTree()
+		{
+			GameManager.Instance.LivesChanged -= OnLivesChanged;
+		}
+
+		private void OnLivesChanged(int lives)
+		{
+			if (lives <= 0)
+			{
+				// Game over, so reset the level.
+				GD.Print("Game Over! Resetting the level.");
+				if (Ball != null)
+				{
+					Ball.QueueFree();
+					_ball = null;
+				}
+			}
+		}
 
 		// Called when the node enters the scene tree for the first time.
 		public override void _Ready()
