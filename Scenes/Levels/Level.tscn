@@ -2,13 +2,12 @@
 
 [ext_resource type="Script" uid="uid://7hjos0nh0r2p" path="res://Code/Level.cs" id="1_bk2yi"]
 [ext_resource type="PackedScene" uid="uid://bp0blw1rlmauk" path="res://Scenes/Paddle.tscn" id="1_echjq"]
+[ext_resource type="Resource" uid="uid://danxxg8mcdntp" path="res://Data/Level1Layout.tres" id="2_d3u4r"]
 [ext_resource type="Texture2D" uid="uid://d5sxmeudhavq" path="res://Art/32/vertical.png" id="3_65pnq"]
 [ext_resource type="Script" uid="uid://drn4hnd6n04el" path="res://Code/Level/Wall.cs" id="3_y1810"]
 [ext_resource type="Texture2D" uid="uid://dum040065uot6" path="res://Art/32/corner.png" id="4_5lnup"]
 [ext_resource type="Texture2D" uid="uid://fwxqe2cvjkhc" path="res://Art/32/horizontal.png" id="5_l0mwj"]
 [ext_resource type="Script" uid="uid://cfty87v1cqbdo" path="res://Code/Testing/ScoreTest.cs" id="7_4nh8f"]
-[ext_resource type="PackedScene" uid="uid://bhvaeq7ckej4" path="res://Scenes/Levels/GreenBlock.tscn" id="7_etd3f"]
-[ext_resource type="PackedScene" uid="uid://387n0gqwlx23" path="res://Scenes/Levels/RedBlock.tscn" id="8_d3u4r"]
 [ext_resource type="PackedScene" uid="uid://mhadpo5cr8hd" path="res://Scenes/Ball.tscn" id="8_etd3f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lbokr"]
@@ -19,6 +18,7 @@ size = Vector2(576, 32)
 
 [node name="Level" type="Node2D" unique_id=902735972]
 script = ExtResource("1_bk2yi")
+_levelBlockMapping = ExtResource("2_d3u4r")
 
 [node name="Paddle" parent="." unique_id=82993675 instance=ExtResource("1_echjq")]
 position = Vector2(353, 289)
@@ -102,29 +102,6 @@ shape = SubResource("RectangleShape2D_1vj35")
 
 [node name="Ball" parent="." unique_id=1546247495 instance=ExtResource("8_etd3f")]
 position = Vector2(273, 196)
-
-[node name="Blocks" type="Node2D" parent="." unique_id=1242971315]
-
-[node name="Block" parent="Blocks" unique_id=286569435 instance=ExtResource("7_etd3f")]
-position = Vector2(233, 91)
-
-[node name="Block2" parent="Blocks" unique_id=417171918 instance=ExtResource("7_etd3f")]
-position = Vector2(297, 91)
-
-[node name="Block3" parent="Blocks" unique_id=600884301 instance=ExtResource("7_etd3f")]
-position = Vector2(361, 91)
-
-[node name="Block4" parent="Blocks" unique_id=71645766 instance=ExtResource("8_d3u4r")]
-position = Vector2(200, 123)
-
-[node name="Block5" parent="Blocks" unique_id=2138917340 instance=ExtResource("8_d3u4r")]
-position = Vector2(264, 123)
-
-[node name="Block6" parent="Blocks" unique_id=1699776733 instance=ExtResource("8_d3u4r")]
-position = Vector2(328, 123)
-
-[node name="Block7" parent="Blocks" unique_id=1088958868 instance=ExtResource("8_d3u4r")]
-position = Vector2(392, 123)
 
 [node name="ScorePrint" type="Node" parent="." unique_id=1091563225]
 script = ExtResource("7_4nh8f")

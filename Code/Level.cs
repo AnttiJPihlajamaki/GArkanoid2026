@@ -18,6 +18,8 @@ namespace GA.GArkanoid
 		[Export] private Paddle _paddle = null;
 		[Export] private Ball _ball = null;
 		[Export] private int _wallWidth = 0;
+		[Export] private LevelBlockMapping _levelBlockMapping = null;
+		[Export] private int _levelId = 1;
 
 		public Paddle Paddle
 		{
@@ -78,6 +80,36 @@ namespace GA.GArkanoid
 			if (_ball == null)
 			{
 				_ball = this.GetNode<Ball>();
+			}
+
+			InstantiateLevel();
+		}
+
+		private void InstantiateLevel()
+		{
+			if (_levelBlockMapping != null)
+			{
+				PackedScene levelBlocksScene = _levelBlockMapping.GetLevelBlocks(_levelId);
+				if (levelBlocksScene != null)
+				{
+					Node2D levelBlocksInstance = levelBlocksScene.Instantiate() as Node2D;
+					if (levelBlocksInstance != null)
+					{
+						AddChild(levelBlocksInstance);
+					}
+					else
+					{
+						GD.PrintErr($"Failed to instantiate level blocks for level {_levelId}.");
+					}
+				}
+				else
+				{
+					GD.PrintErr($"No level blocks found for level {_levelId}.");
+				}
+			}
+			else
+			{
+				GD.PrintErr("LevelBlockMapping is not assigned.");
 			}
 		}
 	}
