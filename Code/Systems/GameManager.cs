@@ -3,6 +3,9 @@ using System;
 
 namespace GA.GArkanoid
 {
+	/// <summary>
+	/// Contains game's data and acts as the main state machine.
+	/// </summary>
 	public partial class GameManager : Node
 	{
 		#region Singleton
@@ -36,6 +39,9 @@ namespace GA.GArkanoid
 
 		private int _score = 0;
 		private int _lives = 3;
+		private SceneTree _sceneTree = null;
+
+		// TODO: Implement the FSM!
 
 		public int Score
 		{
@@ -56,6 +62,22 @@ namespace GA.GArkanoid
 				_lives = Mathf.Clamp(value, 0, Config.MaxLives);
 				EmitSignal(SignalName.LivesChanged, _lives);
 				GD.Print($"Lives changed to {_lives}");
+			}
+		}
+
+		public SceneTree SceneTree
+		{
+			get
+			{
+				// Cache the SceneTree reference for performance.
+				// Lazy initialization (means that the value is 
+				// only computed when accessed for the first time).
+				if (_sceneTree == null)
+				{
+					_sceneTree = GetTree();
+				}
+
+				return _sceneTree;
 			}
 		}
 
