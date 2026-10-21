@@ -40,18 +40,35 @@ namespace GA.GArkanoid
 			var collisionInfo = MoveAndCollide(Velocity * deltaTime);
 			if (collisionInfo != null)
 			{
+				bool doCollide = false;
 				GodotObject collider = collisionInfo.GetCollider();
+
 				if (collider != null)
 				{
+					doCollide = true;
 					if (collider is Block block)
 					{
 						block.Hit();
 					}
+					else if (collider is Wall wall && wall.IsHazard)
+					{
+						// Ball hit the hazard wall, so reset the ball.
+						_direction = Vector2.Zero;
+						Velocity = Vector2.Zero;
+
+						// Notify the GameManager that a life is lost.
+						GameManager.Instance.RemoveLife();
+
+						doCollide = false; // Don't reflect the ball's direction since it's reset.
+					}
 				}
 
-				// Reflect the ball's direction based on the collision normal.
-				_direction = _direction.Bounce(collisionInfo.GetNormal()).Normalized();
-				Velocity = _direction * _speed;
+				if (doCollide)
+				{
+					// Reflect the ball's direction based on the collision normal.
+					_direction = _direction.Bounce(collisionInfo.GetNormal()).Normalized();
+					Velocity = _direction * _speed;
+				}
 			}
 		}
 	}

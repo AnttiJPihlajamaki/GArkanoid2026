@@ -35,6 +35,7 @@ project/assembly_name="GArkanoid2026"
 folder_colors={
 "res://Art/": "red",
 "res://Code/": "orange",
+"res://Data/": "yellow",
 "res://Scenes/": "purple"
 }
 

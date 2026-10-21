@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="LevelBlockMapping" format=3 uid="uid://danxxg8mcdntp"]
+
+[ext_resource type="PackedScene" uid="uid://bbk406rvjwewx" path="res://Scenes/Levels/BlocksLevel1.tscn" id="1_i46s7"]
+[ext_resource type="Script" uid="uid://tmrldixnbqjl" path="res://Code/Level/LevelBlockMapping.cs" id="1_qqwqm"]
+
+[resource]
+script = ExtResource("1_qqwqm")
+_blockMapping = Array[PackedScene]([ExtResource("1_i46s7")])
+metadata/_custom_type_script = "uid://tmrldixnbqjl"
