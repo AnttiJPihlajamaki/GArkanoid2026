@@ -1,5 +1,7 @@
+using GA.GArkanoid.State;
 using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace GA.GArkanoid
 {
@@ -28,6 +30,12 @@ namespace GA.GArkanoid
 				QueueFree();
 				return;
 			}
+
+			// HACK: Initialize the first state
+			// TODO: Replace this with a proper implementation.
+			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
+			mainMenu.OnEnter();
+			LoadedStates.Push(mainMenu);
 		}
 		#endregion
 
@@ -41,7 +49,27 @@ namespace GA.GArkanoid
 		private int _lives = 3;
 		private SceneTree _sceneTree = null;
 
-		// TODO: Implement the FSM!
+		// Contains all states that are currently loaded.
+		private Stack<GameStateBase> _loadedStates = new Stack<GameStateBase>();
+
+		// TODO: Use Dictionary instead.
+		private List<GameStateBase> _gameStates = new List<GameStateBase>
+		{
+			new MainMenuState(),
+			new InGameState(),
+		};
+
+		public Stack<GameStateBase> LoadedStates { get; private set; }
+
+		public GameStateBase ActiveState
+		{
+			get
+			{
+				return LoadedStates.Count > 0
+					? LoadedStates.Peek()
+					: null;
+			}
+		}
 
 		public int Score
 		{
@@ -84,6 +112,91 @@ namespace GA.GArkanoid
 		public override void _Ready()
 		{
 			GD.Print("Game Manager initialized!");
+		}
+
+		/// <summary>
+		/// Finds and returns the state matching with the stateType.
+		/// </summary>
+		/// <param name="stateType"></param>
+		/// <returns>The state or null, if state is not found.</returns>
+		private GameStateBase GetState(GameStateType stateType)
+		{
+			foreach (GameStateBase state in _gameStates)
+			{
+				if (state.StateType == stateType)
+				{
+					return state;
+				}
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Changes the current game state to a new state.
+		/// NOTE: Don't use this to transition back to previous state. For that, use the ActivatePreviousState method.
+		/// </summary>
+		/// <param name="targetStateType">The new state to transition to.</param>
+		/// <param name="force">Is state activation forced or not.</param>
+		/// <returns>True if the state was changed successfully, false otherwise.</returns>
+		public bool ChangeState(GameStateType targetStateType, bool force = false)
+		{
+			// Is the transition from the current state to the new state valid?
+			if (ActiveState != null && !ActiveState.CanTransisionTo(targetStateType))
+			{
+				GD.PushError($"Invalid state transition from {ActiveState.StateType} to {targetStateType}");
+				return false;
+			}
+
+			GameStateBase nextState = GetState(targetStateType);
+			if (nextState == null)
+			{
+				// State not found.
+				GD.PushError($"State {targetStateType} not found");
+				return false;
+			}
+
+			if (nextState.IsAdditive)
+			{
+				// The new state is shown on top of the current one, which stays loaded.
+				ActiveState?.OnExit(keepLoaded: true);
+			}
+			else
+			{
+				while (LoadedStates.Count > 0)
+				{
+					GameStateBase poppedState = LoadedStates.Pop();
+					poppedState.OnExit(keepLoaded: false);
+				}
+			}
+
+			LoadedStates.Push(nextState);
+			ActiveState.OnEnter(force);
+
+			return true;
+		}
+
+		/// <summary>
+		/// Activates the previous game state.
+		/// TODO: Refactor ChangeState to support this corner case and get rid of this method.
+		/// </summary>
+		/// <returns>True if the previous state was activated successfully, false otherwise.</returns>
+		public bool ActivatePreviousState()
+		{
+			if (LoadedStates.Count < 2)
+			{
+				GD.PushError("No previous state to activate");
+				return false;
+			}
+
+			// Pop the current state from the stack.
+			GameStateBase previousState = LoadedStates.Pop();
+			previousState.OnExit(keepLoaded: false);
+
+			// Activate the already loaded, new active state.
+			ActiveState.OnEnter();
+
+			return true;
 		}
 
 		public void AddScore(int scoreToAdd)

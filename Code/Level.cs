@@ -19,7 +19,7 @@ namespace GA.GArkanoid
 		[Export] private Ball _ball = null;
 		[Export] private int _wallWidth = 0;
 		[Export] private LevelBlockMapping _levelBlockMapping = null;
-		[Export] private int _levelId = 1;
+		[Export] private int _levelId = 1; // TODO: Move this to GameManager!
 
 		public Paddle Paddle
 		{
