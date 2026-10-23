@@ -30,12 +30,6 @@ namespace GA.GArkanoid
 				QueueFree();
 				return;
 			}
-
-			// HACK: Initialize the first state
-			// TODO: Replace this with a proper implementation.
-			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
-			mainMenu.OnEnter();
-			LoadedStates.Push(mainMenu);
 		}
 		#endregion
 
@@ -59,7 +53,7 @@ namespace GA.GArkanoid
 			new InGameState(),
 		};
 
-		public Stack<GameStateBase> LoadedStates { get; private set; }
+		public Stack<GameStateBase> LoadedStates { get; private set; } = new Stack<GameStateBase>();
 
 		public GameStateBase ActiveState
 		{
@@ -111,7 +105,16 @@ namespace GA.GArkanoid
 
 		public override void _Ready()
 		{
-			GD.Print("Game Manager initialized!");
+			// HACK: Initialize the first state
+			// TODO: Replace this with a proper implementation.
+
+			// Override currently loaded scene.
+			// TODO: Keep Godot's SceneTree up-to-date with currently active scene.
+			SceneTree.CurrentScene.QueueFree();
+
+			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
+			mainMenu.OnEnter();
+			LoadedStates.Push(mainMenu);
 		}
 
 		/// <summary>
