@@ -10,9 +10,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v3fht")
-_newGameButton = NodePath("VBoxContainer/Button")
-_settingsGameButton = NodePath("VBoxContainer/Button2")
-_quitGameButton = NodePath("VBoxContainer/Button3")
+_newGameButton = NodePath("VBoxContainer/PlayButton")
+_settingsGameButton = NodePath("VBoxContainer/SettingsButton")
+_quitGameButton = NodePath("VBoxContainer/QuitButton")
 
 [node name="Label" type="Label" parent="." unique_id=1527744248]
 layout_mode = 1
@@ -37,14 +37,14 @@ offset_bottom = 50.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="VBoxContainer" unique_id=1357507420]
+[node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1357507420]
 layout_mode = 2
 text = "Play"
 
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=578365929]
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=578365929]
 layout_mode = 2
 text = "Settings"
 
-[node name="Button3" type="Button" parent="VBoxContainer" unique_id=1223688616]
+[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1223688616]
 layout_mode = 2
 text = "Quit"

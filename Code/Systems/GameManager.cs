@@ -40,7 +40,7 @@ namespace GA.GArkanoid
 		public delegate void LivesChangedEventHandler(int lives);
 
 		private int _score = 0;
-		private int _lives = 3;
+		private int _lives = 1;
 		private SceneTree _sceneTree = null;
 
 		// Contains all states that are currently loaded.
@@ -51,7 +51,11 @@ namespace GA.GArkanoid
 		{
 			new MainMenuState(),
 			new InGameState(),
+			new SettingsState(),
+			new GameOverState(),
 		};
+
+		private GameStateBase _nextState = null;
 
 		public Stack<GameStateBase> LoadedStates { get; private set; } = new Stack<GameStateBase>();
 
@@ -159,7 +163,16 @@ namespace GA.GArkanoid
 				return false;
 			}
 
-			if (nextState.IsAdditive)
+			_nextState = nextState;
+
+			CallDeferred(nameof(DelayedChangeState), force);
+
+			return true;
+		}
+
+		private void DelayedChangeState(bool force)
+		{
+			if (_nextState.IsAdditive)
 			{
 				// The new state is shown on top of the current one, which stays loaded.
 				ActiveState?.OnExit(keepLoaded: true);
@@ -173,10 +186,10 @@ namespace GA.GArkanoid
 				}
 			}
 
-			LoadedStates.Push(nextState);
+			LoadedStates.Push(_nextState);
 			ActiveState.OnEnter(force);
 
-			return true;
+			_nextState = null;
 		}
 
 		/// <summary>

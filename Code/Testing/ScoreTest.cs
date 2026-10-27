@@ -10,7 +10,7 @@ namespace GA.GArkanoid
 		public override void _EnterTree()
 		{
 			base._EnterTree();
-			CallDeferred(nameof(Subscibe));
+			CallDeferred(MethodName.Subscibe);
 		}
 
 		private void Subscibe()
