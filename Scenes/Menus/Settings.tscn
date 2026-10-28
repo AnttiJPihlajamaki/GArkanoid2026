@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bn5fhsb4u3786" path="res://Art/32/frame.png" id="1_f2eg1"]
 [ext_resource type="Script" uid="uid://bpeiqqj6u4t0s" path="res://Code/UI/SettingsControl.cs" id="1_s5ji3"]
 
-[node name="Settings" type="Control" unique_id=2101402518]
+[node name="Settings" type="Control" unique_id=2101402518 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +11,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s5ji3")
+_saveButton = NodePath("Background/Buttons/SaveButton")
+_cancelButton = NodePath("Background/Buttons/CancelButton")
+_okButton = NodePath("Background/Buttons/OKButton")
 
 [node name="Background" type="NinePatchRect" parent="." unique_id=707045105]
 layout_mode = 1
@@ -72,8 +75,3 @@ text = "Save"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "OK"
-
-[connection signal="pressed" from="Background/Buttons/CancelButton" to="." method="Close"]
-[connection signal="pressed" from="Background/Buttons/SaveButton" to="." method="Save"]
-[connection signal="pressed" from="Background/Buttons/OKButton" to="." method="Save"]
-[connection signal="pressed" from="Background/Buttons/OKButton" to="." method="Close"]

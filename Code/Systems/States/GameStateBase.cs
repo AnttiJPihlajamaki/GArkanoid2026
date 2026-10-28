@@ -93,7 +93,7 @@ namespace GA.GArkanoid.State
 			if (!keepLoaded && _scene != null)
 			{
 				// This scene should be unloaded and it is still loaded. Unload it.
-				_scene.QueueFree();
+				_scene.Free();
 				_scene = null;
 			}
 		}
