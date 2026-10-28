@@ -43,9 +43,6 @@ namespace GA.GArkanoid
 		private int _lives = 3;
 		private SceneTree _sceneTree = null;
 
-		// Contains all states that are currently loaded.
-		private Stack<GameStateBase> _loadedStates = new Stack<GameStateBase>();
-
 		// TODO: Use Dictionary instead.
 		private List<GameStateBase> _gameStates = new List<GameStateBase>
 		{
