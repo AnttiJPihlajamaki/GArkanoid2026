@@ -55,13 +55,7 @@ namespace GA.GArkanoid
 		{
 			if (lives <= 0)
 			{
-				// Game over, so reset the level.
-				GD.Print("Game Over! Resetting the level.");
-				if (Ball != null)
-				{
-					Ball.QueueFree();
-					_ball = null;
-				}
+				GameManager.Instance.ChangeState(GameStateType.GameOver);
 			}
 		}
 

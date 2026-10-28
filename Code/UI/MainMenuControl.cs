@@ -13,11 +13,13 @@ namespace GA.GArkanoid.UI
 		{
 			// TODO: Subscribe to the rest of the buttons Pressed signals as well.
 			_newGameButton.Pressed += OnNewGamePressed;
+			_settingsGameButton.Pressed += OnSettingsPressed;
 		}
 
 		public override void _ExitTree()
 		{
 			_newGameButton.Pressed -= OnNewGamePressed;
+			_settingsGameButton.Pressed -= OnSettingsPressed;
 		}
 
 		private void OnNewGamePressed()
@@ -26,6 +28,11 @@ namespace GA.GArkanoid.UI
 			{
 				GD.PushError("Loading a new game failed!");
 			}
+		}
+
+		public void OnSettingsPressed()
+		{
+			GameManager.Instance.ChangeState(GameStateType.Settings);
 		}
 	}
 }
