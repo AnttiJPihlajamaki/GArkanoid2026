@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bpeiqqj6u4t0s" path="res://Code/UI/SettingsControl.cs" id="1_s5ji3"]
 
 [node name="Settings" type="Control" unique_id=2101402518 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,3 +76,14 @@ text = "Save"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "OK"
+
+[node name="AudioControls" type="VBoxContainer" parent="Background" unique_id=997065871]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 5.0
+offset_top = 30.0
+offset_right = -5.0
+offset_bottom = 70.0
+grow_horizontal = 2

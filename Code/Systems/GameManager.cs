@@ -44,12 +44,14 @@ namespace GA.GArkanoid
 		private SceneTree _sceneTree = null;
 
 		// TODO: Use Dictionary instead.
+		// 
 		private List<GameStateBase> _gameStates = new List<GameStateBase>
 		{
 			new MainMenuState(),
 			new InGameState(),
 			new SettingsState(),
 			new GameOverState(),
+			new PauseState(),
 		};
 
 		private GameStateBase _nextState = null;

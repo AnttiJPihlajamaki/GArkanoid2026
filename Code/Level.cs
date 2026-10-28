@@ -79,6 +79,14 @@ namespace GA.GArkanoid
 			InstantiateLevel();
 		}
 
+		public override void _Input(InputEvent @event)
+		{
+			if (@event.IsActionPressed(Config.PauseActionName))
+			{
+				GameManager.Instance.ChangeState(GameStateType.Pause);
+			}
+		}
+
 		private void InstantiateLevel()
 		{
 			if (_levelBlockMapping != null)
