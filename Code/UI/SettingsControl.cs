@@ -157,7 +157,8 @@ namespace GA.GArkanoid.UI
 			int id = 0;
 			int selected = 0; // TODO: When settings data is implemented, read this from the data.
 
-			while (GetWidth(viewPortSize, multiplyer) <= screenSize.X && GetHeight(viewPortSize, multiplyer) <= screenSize.Y)
+			while (GetWidth(viewPortSize, multiplyer) <= screenSize.X
+				&& GetHeight(viewPortSize, multiplyer) <= screenSize.Y)
 			{
 				Resolution resolution = new Resolution()
 				{
