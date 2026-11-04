@@ -3,8 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bn5fhsb4u3786" path="res://Art/32/frame.png" id="1_f2eg1"]
 [ext_resource type="Script" uid="uid://bpeiqqj6u4t0s" path="res://Code/UI/SettingsControl.cs" id="1_s5ji3"]
 [ext_resource type="PackedScene" uid="uid://bhi638j2qaosq" path="res://Scenes/UI/AudioControl.tscn" id="3_0le60"]
+[ext_resource type="Script" uid="uid://bkfdv5vlcakn4" path="res://Code/UI/UIShowOnState.cs" id="3_ofyyl"]
 
-[node name="Settings" type="Control" unique_id=2101402518 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton", "_masterAudioControl", "_musicAudioControl", "_sfxAudioControl")]
+[node name="Settings" type="Control" unique_id=2101402518 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton", "_backToMenuButton", "_masterAudioControl", "_musicAudioControl", "_sfxAudioControl", "_fullscreenButton", "_resolutionsButton")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -16,15 +17,18 @@ script = ExtResource("1_s5ji3")
 _saveButton = NodePath("Background/Buttons/SaveButton")
 _cancelButton = NodePath("Background/Buttons/CancelButton")
 _okButton = NodePath("Background/Buttons/OKButton")
-_masterAudioControl = NodePath("Background/AudioControls/MasterAudioControl")
-_musicAudioControl = NodePath("Background/AudioControls/MusicAudioControl")
-_sfxAudioControl = NodePath("Background/AudioControls/SFXAudioControl")
+_backToMenuButton = NodePath("Background/Buttons/BackToMenuButton")
+_masterAudioControl = NodePath("Background/SettingsContainer/AudioControls/MasterAudioControl")
+_musicAudioControl = NodePath("Background/SettingsContainer/AudioControls/MusicAudioControl")
+_sfxAudioControl = NodePath("Background/SettingsContainer/AudioControls/SFXAudioControl")
 _masterBusName = "Master"
 _musicBusName = "Music"
 _sfxBusName = "SFX"
 _masterDisplayName = "Master Volume"
 _musicDisplayName = "Music Volume"
 _sfxDisplayName = "SFX Volume"
+_fullscreenButton = NodePath("Background/SettingsContainer/VideoControls/FullScreen/CheckButton")
+_resolutionsButton = NodePath("Background/SettingsContainer/VideoControls/Resolution/OptionButton")
 
 [node name="Background" type="NinePatchRect" parent="." unique_id=707045105]
 layout_mode = 1
@@ -74,6 +78,19 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
+[node name="BackToMenuButton" type="Button" parent="Background/Buttons" unique_id=2074259462]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "< Back to Main menu"
+text_overrun_behavior = 3
+
+[node name="Control" type="Control" parent="Background/Buttons/BackToMenuButton" unique_id=2050227518]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_ofyyl")
+_enabledState = 6
+
 [node name="CancelButton" type="Button" parent="Background/Buttons" unique_id=328387371]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -89,27 +106,72 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "OK"
 
-[node name="AudioControls" type="VBoxContainer" parent="Background" unique_id=997065871]
-custom_minimum_size = Vector2(0, 40)
+[node name="SettingsContainer" type="VBoxContainer" parent="Background" unique_id=224086355]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = 5.0
-offset_top = 30.0
-offset_right = -5.0
-offset_bottom = 70.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 29.0
+offset_right = -10.0
+offset_bottom = -38.0
 grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Label" type="Label" parent="Background/AudioControls" unique_id=2064473008]
+[node name="HSeparator2" type="HSeparator" parent="Background/SettingsContainer" unique_id=437540465]
+layout_mode = 2
+
+[node name="AudioControls" type="VBoxContainer" parent="Background/SettingsContainer" unique_id=997065871]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Background/SettingsContainer/AudioControls" unique_id=2064473008]
 layout_mode = 2
 text = "Audio"
 horizontal_alignment = 1
 
-[node name="MasterAudioControl" parent="Background/AudioControls" unique_id=1333349106 instance=ExtResource("3_0le60")]
+[node name="MasterAudioControl" parent="Background/SettingsContainer/AudioControls" unique_id=1333349106 instance=ExtResource("3_0le60")]
 layout_mode = 2
 
-[node name="MusicAudioControl" parent="Background/AudioControls" unique_id=1435051202 instance=ExtResource("3_0le60")]
+[node name="MusicAudioControl" parent="Background/SettingsContainer/AudioControls" unique_id=1435051202 instance=ExtResource("3_0le60")]
 layout_mode = 2
 
-[node name="SFXAudioControl" parent="Background/AudioControls" unique_id=352802643 instance=ExtResource("3_0le60")]
+[node name="SFXAudioControl" parent="Background/SettingsContainer/AudioControls" unique_id=352802643 instance=ExtResource("3_0le60")]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="Background/SettingsContainer" unique_id=753955222]
+layout_mode = 2
+
+[node name="VideoControls" type="VBoxContainer" parent="Background/SettingsContainer" unique_id=1117442200]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Background/SettingsContainer/VideoControls" unique_id=1968245034]
+layout_mode = 2
+text = "Video"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Resolution" type="HBoxContainer" parent="Background/SettingsContainer/VideoControls" unique_id=1984910531]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Background/SettingsContainer/VideoControls/Resolution" unique_id=1305972717]
+layout_mode = 2
+text = "Resolution"
+
+[node name="OptionButton" type="OptionButton" parent="Background/SettingsContainer/VideoControls/Resolution" unique_id=577257883]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullScreen" type="HBoxContainer" parent="Background/SettingsContainer/VideoControls" unique_id=903380709]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Background/SettingsContainer/VideoControls/FullScreen" unique_id=1406340714]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fullscreen"
+
+[node name="CheckButton" type="CheckButton" parent="Background/SettingsContainer/VideoControls/FullScreen" unique_id=1229925538]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="Background/SettingsContainer" unique_id=1372624583]
 layout_mode = 2

@@ -106,10 +106,14 @@ namespace GA.GArkanoid
 			}
 		}
 
+		public static Vector2I MinWindowSize { get; private set; }
+
 		public override void _Ready()
 		{
 			// HACK: Initialize the first state
 			// TODO: Replace this with a proper implementation.
+
+			MinWindowSize = GetWindow().Size;
 
 			// Override currently loaded scene.
 			// TODO: Keep Godot's SceneTree up-to-date with currently active scene.
