@@ -32,6 +32,10 @@ namespace GA.GArkanoid.UI
 		private Dictionary<int, Resolution> _resolutions = new Dictionary<int, Resolution>();
 		#endregion Video
 
+		#region Settigns data
+		private SettingsData _data = null;
+		#endregion
+
 		public override void _EnterTree()
 		{
 			_saveButton.Pressed += Save;
@@ -113,7 +117,8 @@ namespace GA.GArkanoid.UI
 		{
 			if (_resolutions.TryGetValue((int)index, out Resolution resolution))
 			{
-				DisplayServer.WindowSetSize((Vector2I)resolution);
+				_data.Resolution = (Vector2I)resolution;
+				Settings.ApplySettings(_data);
 			}
 			else
 			{
@@ -123,12 +128,15 @@ namespace GA.GArkanoid.UI
 
 		private void OnFullscreenToggled(bool toggledOn)
 		{
-			DisplayServer.WindowSetMode(toggledOn ? DisplayServer.WindowMode.Fullscreen : DisplayServer.WindowMode.Windowed);
+			_data.Fullscreen = toggledOn;
 			_resolutionsButton.Disabled = toggledOn;
+			Settings.ApplySettings(_data);
 		}
 
 		public override void _Ready()
 		{
+			_data = new SettingsData(GameManager.Instance.Settings.Data);
+
 			if (_masterAudioControl != null)
 			{
 				// TODO: When settings data is implemented, read this from the data.
@@ -146,16 +154,23 @@ namespace GA.GArkanoid.UI
 				SetUpAudioControl(_sfxAudioControl, _sfxBusName, _sfxDisplayName);
 			}
 
-			InitializeScreenControls();
+			InitializeScreenControls(_data);
 		}
 
-		private void InitializeScreenControls()
+		private void InitializeScreenControls(SettingsData data)
 		{
 			Vector2I viewPortSize = GameManager.MinWindowSize;
 			Vector2I screenSize = DisplayServer.ScreenGetSize();
+
+			Resolution savedResolution = new Resolution()
+			{
+				Width = data.Resolution.X,
+				Height = data.Resolution.Y
+			};
+
 			int multiplyer = 1;
 			int id = 0;
-			int selected = 0; // TODO: When settings data is implemented, read this from the data.
+			int selected = 0;
 
 			while (GetWidth(viewPortSize, multiplyer) <= screenSize.X
 				&& GetHeight(viewPortSize, multiplyer) <= screenSize.Y)
@@ -167,6 +182,11 @@ namespace GA.GArkanoid.UI
 					Multiplyer = multiplyer,
 				};
 
+				if (resolution == savedResolution)
+				{
+					selected = id;
+				}
+
 				_resolutions.Add(id, resolution);
 
 				_resolutionsButton.AddItem(resolution.ToString(), id);
@@ -174,10 +194,17 @@ namespace GA.GArkanoid.UI
 				id++;
 			}
 
-			_resolutionsButton.Select(selected);
+			if (_resolutionsButton.GetItemCount() > 0)
+			{
+				_resolutionsButton.Select(selected);
+			}
+			else
+			{
+				GD.PushWarning("No resolutions were added to the resolutions button. " +
+					"This may be due to the editor.");
+			}
 
-			DisplayServer.WindowMode windowMode = DisplayServer.WindowGetMode();
-			_fullscreenButton.ButtonPressed = false; // TODO: When settings data is implemented, read this from the data.
+			_fullscreenButton.ButtonPressed = data.Fullscreen;
 
 			static int GetWidth(Vector2I viewPortSize, int multiplyer)
 			{
@@ -210,18 +237,32 @@ namespace GA.GArkanoid.UI
 				return;
 			}
 
-			AudioServer.SetBusVolumeDb(audioBusIndex, decibel);
+			switch (audioBus)
+			{
+				case "Master":
+					_data.MasterVolume = decibel;
+					break;
+				case "Music":
+					_data.MusicVolume = decibel;
+					break;
+				case "SFX":
+					_data.SFXVolume = decibel;
+					break;
+			}
+
+			Settings.ApplySettings(_data);
 		}
 
 		public void Close()
 		{
+			Settings.ApplySettings(GameManager.Instance.Settings.Data);
 			GameManager.Instance.ActivatePreviousState();
 		}
 
 		public void Save()
 		{
-			// TODO: Implement saving Settings
-			GD.Print("Saving the settings.");
+			GameManager.Instance.Settings.Data = _data;
+			GameManager.Instance.Settings.Save();
 		}
 	}
 }

@@ -68,6 +68,8 @@ namespace GA.GArkanoid
 			}
 		}
 
+		public Settings Settings { get; private set; } = null;
+
 		public int Score
 		{
 			get { return _score; }
@@ -122,6 +124,8 @@ namespace GA.GArkanoid
 			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
 			mainMenu.OnEnter();
 			LoadedStates.Push(mainMenu);
+
+			Settings = new Settings();
 
 			// TODO: Don't call this when loading the game from a save file.
 			StartNewGame();

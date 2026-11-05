@@ -7,6 +7,26 @@ namespace GA.GArkanoid
 		public const string SettingsFilePath = "user://settings.cfg";
 		private SettingsData _data = null;
 
+		public SettingsData Data
+		{
+			get => _data;
+			set
+			{
+				_data = value;
+				ApplySettings(_data);
+			}
+		}
+
+		public Settings()
+		{
+			Data = Load();
+		}
+
+		public Settings(SettingsData data)
+		{
+			Data = data;
+		}
+
 		public static void ApplySettings(SettingsData data)
 		{
 			AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), data.MasterVolume);
@@ -24,12 +44,12 @@ namespace GA.GArkanoid
 		public void Save()
 		{
 			ConfigFile settingsFile = new ConfigFile();
-			settingsFile.SetValue("Audio", "MasterVolume", _data.MasterVolume);
-			settingsFile.SetValue("Audio", "MusicVolume", _data.MusicVolume);
-			settingsFile.SetValue("Audio", "SFXVolume", _data.SFXVolume);
+			settingsFile.SetValue("Audio", "MasterVolume", Data.MasterVolume);
+			settingsFile.SetValue("Audio", "MusicVolume", Data.MusicVolume);
+			settingsFile.SetValue("Audio", "SFXVolume", Data.SFXVolume);
 
-			settingsFile.SetValue("Video", "Resolution", _data.Resolution);
-			settingsFile.SetValue("Video", "Fullscreen", _data.Fullscreen);
+			settingsFile.SetValue("Video", "Resolution", Data.Resolution);
+			settingsFile.SetValue("Video", "Fullscreen", Data.Fullscreen);
 
 			settingsFile.Save(SettingsFilePath);
 		}
@@ -37,16 +57,13 @@ namespace GA.GArkanoid
 		// TODO: Return loaded data.
 		public SettingsData Load()
 		{
-			SettingsData result = null;
-
 			ConfigFile savedSettings = new ConfigFile();
 			Error readError = savedSettings.Load(SettingsFilePath);
 			SettingsData defaultData = SettingsData.Default;
 
 			if (readError != Error.Ok)
 			{
-				result = defaultData;
-				return result;
+				return defaultData;
 			}
 
 			return new SettingsData()
