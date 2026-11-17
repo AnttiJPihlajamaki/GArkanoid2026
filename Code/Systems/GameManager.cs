@@ -55,6 +55,7 @@ namespace GA.GArkanoid
 			new SettingsState(),
 			new GameOverState(),
 			new PauseState(),
+			new WinState()
 		};
 
 		private GameStateBase _nextState = null;
