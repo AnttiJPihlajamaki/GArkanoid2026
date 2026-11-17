@@ -42,6 +42,9 @@ namespace GA.GArkanoid
 		private int _score = 0;
 		private int _lives = 3;
 		private SceneTree _sceneTree = null;
+		private AudioStreamPlayer _musicPlayer = null;
+		private MusicMap _musicMap = null;
+
 
 		// TODO: Use Dictionary instead.
 		// 
@@ -117,18 +120,35 @@ namespace GA.GArkanoid
 
 			MinWindowSize = GetWindow().Size;
 
-			// Override currently loaded scene.
-			// TODO: Keep Godot's SceneTree up-to-date with currently active scene.
-			SceneTree.CurrentScene.QueueFree();
-
-			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
-			mainMenu.OnEnter();
-			LoadedStates.Push(mainMenu);
-
 			Settings = new Settings();
+
+			InitializeMusic();
 
 			// TODO: Don't call this when loading the game from a save file.
 			StartNewGame();
+
+			// Override currently loaded scene.
+			// TODO: Keep Godot's SceneTree up-to-date with currently active scene.
+			SceneTree.CurrentScene.QueueFree();
+			ActivateInitnialState();
+		}
+
+		private void ActivateInitnialState()
+		{
+			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
+			LoadedStates.Push(mainMenu);
+			mainMenu.OnEnter();
+		}
+
+		private void InitializeMusic()
+		{
+			_musicPlayer = new AudioStreamPlayer();
+			_musicPlayer.Bus = "Music";
+			_musicPlayer.ProcessMode = ProcessModeEnum.Always;
+
+			_musicMap = ResourceLoader.Load<MusicMap>(Config.MusicMapPath);
+
+			AddChild(_musicPlayer);
 		}
 
 		public void StartNewGame()
@@ -257,6 +277,30 @@ namespace GA.GArkanoid
 		public void RemoveLife()
 		{
 			Lives--;
+		}
+
+		/// <summary>
+		/// Plays the appropriate music track for the given state.
+		/// </summary>
+		/// <param name="stateType">The state to play music for.</param>
+		public void PlayMusic(GameStateType stateType)
+		{
+			if (_musicPlayer == null) return;
+
+			AudioStream musicStream = _musicMap.GetMusicForState(stateType);
+			if (musicStream != null)
+			{
+				// Check if the correct track is already playing
+				if (_musicPlayer.Stream == musicStream && _musicPlayer.Playing)
+				{
+					// Same track is already playing, don't restart it
+					return;
+				}
+
+				musicStream.Set("loop", true);
+				_musicPlayer.Stream = musicStream;
+				_musicPlayer.Play();
+			}
 		}
 	}
 }

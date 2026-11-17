@@ -16,6 +16,15 @@ namespace GA.GArkanoid.State
 			AddTargetState(GameStateType.InGame); // For level completion
 		}
 
+		override public void OnEnter(bool keepLoaded)
+		{
+			// Call parent class's implementation first.
+			base.OnEnter(keepLoaded);
+
+			// Do the rest of the activation logic here!
+			GameManager.Instance.PlayMusic(GameStateType.InGame);
+		}
+
 		public override void OnExit(bool keepLoaded)
 		{
 			// Call parent class's implementation first.

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MusicMap" format=3 uid="uid://ceddq7ybdm5gb"]
+
+[ext_resource type="Script" uid="uid://drmkmeff2k1hl" path="res://Code/Level/StateMusicMapping.cs" id="1_4npon"]
+[ext_resource type="Script" uid="uid://bppio20qts4vq" path="res://Code/Level/MusicMap.cs" id="1_aeqn3"]
+[ext_resource type="AudioStream" uid="uid://cp445kkpfw2ee" path="res://Audio/579825__szegvari__electronic-cinematic-music.wav" id="1_qwvym"]
+[ext_resource type="AudioStream" uid="uid://drbrpxxq4476a" path="res://Audio/387440__frankum__electronic-music-loop-001-accurate-time.wav" id="3_17ntr"]
+
+[sub_resource type="Resource" id="Resource_4npon"]
+script = ExtResource("1_4npon")
+StateType = 1
+MusicTrack = ExtResource("1_qwvym")
+metadata/_custom_type_script = "uid://drmkmeff2k1hl"
+
+[sub_resource type="Resource" id="Resource_5xdxe"]
+script = ExtResource("1_4npon")
+StateType = 2
+MusicTrack = ExtResource("3_17ntr")
+metadata/_custom_type_script = "uid://drmkmeff2k1hl"
+
+[resource]
+script = ExtResource("1_aeqn3")
+StateMappings = [SubResource("Resource_4npon"), SubResource("Resource_5xdxe")]
+metadata/_custom_type_script = "uid://bppio20qts4vq"
