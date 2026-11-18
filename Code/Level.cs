@@ -21,6 +21,8 @@ namespace GA.GArkanoid
 		[Export] private LevelBlockMapping _levelBlockMapping = null;
 		[Export] private int _levelId = 1; // TODO: Move this to GameManager!
 
+		private int _blockCount = 0;
+
 		public Paddle Paddle
 		{
 			get { return _paddle; }
@@ -110,6 +112,8 @@ namespace GA.GArkanoid
 					if (levelBlocksInstance != null)
 					{
 						AddChild(levelBlocksInstance);
+
+						InitializeBlocks();
 					}
 					else
 					{
@@ -124,6 +128,28 @@ namespace GA.GArkanoid
 			else
 			{
 				GD.PrintErr("LevelBlockMapping is not assigned.");
+			}
+		}
+
+		private void InitializeBlocks()
+		{
+			IList<Block> blocks = this.GetNodes<Block>(recursive: true);
+			_blockCount = blocks.Count;
+
+			foreach (Block block in blocks)
+			{
+				block.BlockDestroyed += OnBlockDestroyed;
+			}
+		}
+
+		private void OnBlockDestroyed(Block block)
+		{
+			block.BlockDestroyed -= OnBlockDestroyed;
+
+			_blockCount--;
+			if (_blockCount <= 0)
+			{
+				GameManager.Instance.ChangeState(GameStateType.Win);
 			}
 		}
 	}

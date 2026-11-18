@@ -14,7 +14,7 @@ namespace GA.GArkanoid
 			// For now all blocks gets destroyed when they are hit once.
 			// TODO: Implement health functionality to enable multiple hit support.
 			GameManager.Instance.AddScore(_score);
-			EmitSignal(SignalName.BlockDestroyed);
+			EmitSignal(SignalName.BlockDestroyed, this);
 			QueueFree(); // Use this instead of Free().
 		}
 	}

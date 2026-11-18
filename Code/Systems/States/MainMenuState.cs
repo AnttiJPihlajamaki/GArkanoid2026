@@ -1,5 +1,3 @@
-using Godot;
-
 namespace GA.GArkanoid.State
 {
 	public class MainMenuState : GameStateBase
@@ -12,6 +10,13 @@ namespace GA.GArkanoid.State
 		{
 			AddTargetState(GameStateType.InGame);
 			AddTargetState(GameStateType.Settings);
+		}
+
+		public override void OnEnter(bool forceLoad = false)
+		{
+			base.OnEnter(forceLoad);
+
+			GameManager.Instance.PlayMusic(GameStateType.MainMenu);
 		}
 	}
 }

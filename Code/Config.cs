@@ -9,5 +9,6 @@ namespace GA.GArkanoid
 		public const int InitialLives = 3;
 
 		public const string PauseActionName = "Pause";
+		public const string MusicMapPath = "res://Data/MusicMap.tres";
 	}
 }
