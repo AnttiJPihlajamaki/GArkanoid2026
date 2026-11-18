@@ -134,6 +134,28 @@ namespace GA.GArkanoid
 			ActivateInitnialState();
 		}
 
+		public override void _Input(InputEvent @event)
+		{
+			if (@event.IsActionPressed(Config.QuickSaveAction))
+			{
+				QuickSave();
+			}
+			else if (@event.IsActionPressed(Config.QuickLoadAction))
+			{
+				QuickLoad();
+			}
+		}
+
+		private void QuickLoad()
+		{
+			GD.Print("Quick Load!");
+		}
+
+		private void QuickSave()
+		{
+			GD.Print("Quick Save!");
+		}
+
 		private void ActivateInitnialState()
 		{
 			GameStateBase mainMenu = GetState(GameStateType.MainMenu);

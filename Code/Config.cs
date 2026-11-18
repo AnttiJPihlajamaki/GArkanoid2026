@@ -10,5 +10,7 @@ namespace GA.GArkanoid
 
 		public const string PauseActionName = "Pause";
 		public const string MusicMapPath = "res://Data/MusicMap.tres";
+		public const string QuickSaveAction = "QuickSave";
+		public const string QuickLoadAction = "QuickLoad";
 	}
 }
