@@ -5,7 +5,6 @@ using System;
 
 namespace GA.GArkanoid
 {
-	[Tool]
 	public partial class Level : Node2D, ISaveable
 	{
 		#region Statics
