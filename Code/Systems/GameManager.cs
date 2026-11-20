@@ -114,6 +114,8 @@ namespace GA.GArkanoid
 
 		public static Vector2I MinWindowSize { get; private set; }
 
+		public SaveSystem SaveSystem { get; private set; } = new SaveSystem();
+
 		public override void _Ready()
 		{
 			// HACK: Initialize the first state
@@ -148,12 +150,30 @@ namespace GA.GArkanoid
 
 		private void QuickLoad()
 		{
-			GD.Print("Quick Load!");
+			var loadData = SaveSystem.QuickLoad();
+			if (loadData == null)
+			{
+				GD.PushError("No save file found.");
+				return;
+			}
+
+			Score = (int)loadData["Score"];
+			Lives = (int)loadData["Lives"];
+
+			ChangeState(GameStateType.InGame, force: true);
 		}
 
 		private void QuickSave()
 		{
-			GD.Print("Quick Save!");
+			var data = new Godot.Collections.Dictionary<string, Variant>
+			{
+				{ "Score", Score },
+				{ "Lives", Lives }
+			};
+
+			Level.Current.Save(ref data);
+
+			SaveSystem.QuickSave(data);
 		}
 
 		private void ActivateInitnialState()

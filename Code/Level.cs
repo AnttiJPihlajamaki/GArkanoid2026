@@ -5,7 +5,8 @@ using System;
 
 namespace GA.GArkanoid
 {
-	public partial class Level : Node2D
+	[Tool]
+	public partial class Level : Node2D, ISaveable
 	{
 		#region Statics
 		public static Level Current
@@ -22,6 +23,7 @@ namespace GA.GArkanoid
 		[Export] private int _levelId = 1; // TODO: Move this to GameManager!
 
 		private int _blockCount = 0;
+		private Dictionary<string, Block> _blocks = new Dictionary<string, Block>();
 
 		public Paddle Paddle
 		{
@@ -48,6 +50,9 @@ namespace GA.GArkanoid
 			get;
 			private set;
 		}
+
+		[Export]
+		public string ID { get; set; } = new System.Guid().ToString();
 
 		override public void _EnterTree()
 		{
@@ -91,6 +96,12 @@ namespace GA.GArkanoid
 			}
 
 			InstantiateLevel();
+
+			if (GameManager.Instance.SaveSystem.LatestLoadData != null)
+			{
+				Load(GameManager.Instance.SaveSystem.LatestLoadData);
+				GameManager.Instance.SaveSystem.LoadingDone();
+			}
 		}
 
 		public override void _Input(InputEvent @event)
@@ -135,10 +146,28 @@ namespace GA.GArkanoid
 		{
 			IList<Block> blocks = this.GetNodes<Block>(recursive: true);
 			_blockCount = blocks.Count;
+			_blocks.Clear();
 
 			foreach (Block block in blocks)
 			{
+				// TODO: Make sure all signal are disconnected before loading.
 				block.BlockDestroyed += OnBlockDestroyed;
+
+				if (!string.IsNullOrEmpty(block.ID))
+				{
+					if (_blocks.ContainsKey(block.ID))
+					{
+						GD.PushError($"Duplicate block ID found: {block.ID}. Each block must have a unique ID.");
+					}
+					else
+					{
+						_blocks[block.ID] = block;
+					}
+				}
+				else
+				{
+					GD.PushError($"Block at {block.GetPath()} does not have an ID assigned. Each block must have a unique ID.");
+				}
 			}
 		}
 
@@ -151,6 +180,65 @@ namespace GA.GArkanoid
 			{
 				GameManager.Instance.ChangeState(GameStateType.Win);
 			}
+		}
+
+		public bool Save(ref Godot.Collections.Dictionary<string, Variant> saveData)
+		{
+			if (saveData == null)
+			{
+				GD.PushWarning("Save data was null. This may be a bug!");
+				saveData = new Godot.Collections.Dictionary<string, Variant>();
+			}
+
+			bool success = true;
+
+			var levelData = new Godot.Collections.Dictionary<string, Variant>();
+
+			// TODO: Save the level index
+
+			// Save all blocks.
+			foreach (KeyValuePair<string, Block> blockEntry in _blocks)
+			{
+				Block block = blockEntry.Value;
+				if (!block.Save(ref levelData))
+				{
+					GD.PushError($"Failed to save data for block with ID: {block.ID}");
+					success = false;
+				}
+			}
+
+			// TODO: Save the ball.
+			// TODO: Save the paddle.
+
+			saveData["Level"] = levelData;
+
+			return success;
+		}
+
+		public bool Load(Godot.Collections.Dictionary<string, Variant> saveData)
+		{
+			bool success = true;
+			if (saveData == null || !saveData.ContainsKey("Level"))
+			{
+				GD.PushError("No level save data found.");
+				return false;
+			}
+
+			var levelData = (Godot.Collections.Dictionary<string, Variant>)saveData["Level"];
+			foreach (var blockEntry in _blocks)
+			{
+				Block block = blockEntry.Value;
+
+				if (!block.Load(levelData))
+				{
+					GD.PushError($"Failed to load data for block with ID: {block.ID}");
+					success = false;
+				}
+			}
+
+			// TODO: Load ball and paddle.
+
+			return success;
 		}
 	}
 }

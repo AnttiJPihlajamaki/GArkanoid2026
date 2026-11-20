@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using GA.Common;
+using Godot.Collections;
 
 namespace GA.GArkanoid
 {
@@ -9,9 +10,6 @@ namespace GA.GArkanoid
 	{
 		[Signal] public delegate void BlockDestroyedEventHandler(Block block);
 		[Export] private int _score = 10;
-
-		[Export]
-
 
 		private bool _isDestroyed = false;
 		private CollisionShape2D _collider = null;
@@ -69,14 +67,43 @@ namespace GA.GArkanoid
 			IsDestroyed = true;
 		}
 
-		public bool Save()
+		public bool Save(ref Dictionary<string, Variant> saveData)
 		{
-			throw new NotImplementedException();
+			if (saveData == null)
+			{
+				GD.PushWarning("Save data was null. This may be a bug!");
+				saveData = new Dictionary<string, Variant>();
+			}
+
+			var blockData = new Dictionary<string, Variant>();
+			blockData["IsDestroyed"] = IsDestroyed;
+
+			saveData[ID] = blockData;
+
+			return true;
 		}
 
-		public bool Load()
+		public bool Load(Dictionary<string, Variant> saveData)
 		{
-			throw new NotImplementedException();
+			if (saveData == null || !saveData.ContainsKey(ID))
+			{
+				GD.PushError($"No save data found for block with ID: {ID}");
+				return false;
+			}
+
+			var blockData = (Dictionary<string, Variant>)saveData[ID];
+			if (blockData == null)
+			{
+				GD.PrintErr($"Invalid save data for block with ID: {ID}");
+				return false;
+			}
+
+			if (blockData.ContainsKey("IsDestroyed"))
+			{
+				IsDestroyed = (bool)blockData["IsDestroyed"];
+			}
+
+			return true;
 		}
 	}
 }
