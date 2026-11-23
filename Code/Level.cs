@@ -236,8 +236,8 @@ namespace GA.GArkanoid
 				}
 			}
 
-			Ball.Save(ref saveData);
-			Paddle.Save(ref saveData);
+			Ball.Save(ref levelData);
+			Paddle.Save(ref levelData);
 
 			saveData["Level"] = levelData;
 
