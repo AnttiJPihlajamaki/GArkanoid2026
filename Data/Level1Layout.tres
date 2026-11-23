@@ -2,8 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://bbk406rvjwewx" path="res://Scenes/Levels/BlocksLevel1.tscn" id="1_i46s7"]
 [ext_resource type="Script" uid="uid://tmrldixnbqjl" path="res://Code/Level/LevelBlockMapping.cs" id="1_qqwqm"]
+[ext_resource type="PackedScene" uid="uid://cy4gemmuq84j5" path="res://Scenes/Levels/BlocksLevel2.tscn" id="2_776b2"]
 
 [resource]
 script = ExtResource("1_qqwqm")
-_blockMapping = Array[PackedScene]([ExtResource("1_i46s7")])
+_blockMapping = Array[PackedScene]([ExtResource("1_i46s7"), ExtResource("2_776b2")])
 metadata/_custom_type_script = "uid://tmrldixnbqjl"

@@ -23,6 +23,7 @@ namespace GA.GArkanoid
 
 		private int _blockCount = 0;
 		private Dictionary<string, Block> _blocks = new Dictionary<string, Block>();
+		private Node2D _levelBlocksInstance = null;
 
 		public Paddle Paddle
 		{
@@ -118,10 +119,16 @@ namespace GA.GArkanoid
 				PackedScene levelBlocksScene = _levelBlockMapping.GetLevelBlocks(_levelId);
 				if (levelBlocksScene != null)
 				{
-					Node2D levelBlocksInstance = levelBlocksScene.Instantiate() as Node2D;
-					if (levelBlocksInstance != null)
+					if (_levelBlocksInstance != null)
 					{
-						AddChild(levelBlocksInstance);
+						_levelBlocksInstance.QueueFree();
+						_levelBlocksInstance = null;
+					}
+
+					_levelBlocksInstance = levelBlocksScene.Instantiate() as Node2D;
+					if (_levelBlocksInstance != null)
+					{
+						AddChild(_levelBlocksInstance);
 
 						InitializeBlocks();
 					}
@@ -143,7 +150,7 @@ namespace GA.GArkanoid
 
 		private void InitializeBlocks()
 		{
-			IList<Block> blocks = this.GetNodes<Block>(recursive: true);
+			IList<Block> blocks = _levelBlocksInstance.GetNodes<Block>(recursive: true);
 			_blockCount = blocks.Count;
 			_blocks.Clear();
 
@@ -177,7 +184,22 @@ namespace GA.GArkanoid
 			_blockCount--;
 			if (_blockCount <= 0)
 			{
+				LevelCleared();
+			}
+		}
+
+		private void LevelCleared()
+		{
+			if (_levelBlockMapping.IsLastLevel(_levelId))
+			{
 				GameManager.Instance.ChangeState(GameStateType.Win);
+			}
+			else
+			{
+				Ball.ResetBall();
+
+				_levelId++;
+				CallDeferred(MethodName.InstantiateLevel);
 			}
 		}
 

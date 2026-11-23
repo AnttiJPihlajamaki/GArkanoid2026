@@ -118,8 +118,7 @@ namespace GA.GArkanoid
 					{
 						// Ball hit the hazard wall, so reset the ball.
 						effect = EffectType.Death;
-						_direction = Vector2.Zero;
-						Velocity = Vector2.Zero;
+						ResetBall();
 
 						// Notify the GameManager that a life is lost.
 						GameManager.Instance.RemoveLife();
@@ -140,6 +139,12 @@ namespace GA.GArkanoid
 					Velocity = _direction * _speed;
 				}
 			}
+		}
+
+		public void ResetBall()
+		{
+			_direction = Vector2.Zero;
+			Velocity = Vector2.Zero;
 		}
 	}
 }
