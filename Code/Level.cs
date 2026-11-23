@@ -95,11 +95,19 @@ namespace GA.GArkanoid
 				GD.PushError("No EffectPlayer found fron the scene.");
 			}
 
+			Godot.Collections.Dictionary<string, Variant> loadData = GameManager.Instance.SaveSystem.LatestLoadData;
+			Godot.Collections.Dictionary<string, Variant> levelData = null;
+			if (loadData != null)
+			{
+				levelData = (Godot.Collections.Dictionary<string, Variant>)loadData["Level"];
+				_levelId = (int)levelData["LevelIndex"];
+			}
+
 			InstantiateLevel();
 
-			if (GameManager.Instance.SaveSystem.LatestLoadData != null)
+			if (levelData != null)
 			{
-				Load(GameManager.Instance.SaveSystem.LatestLoadData);
+				Load(levelData);
 				GameManager.Instance.SaveSystem.LoadingDone();
 			}
 		}
@@ -215,7 +223,7 @@ namespace GA.GArkanoid
 
 			var levelData = new Godot.Collections.Dictionary<string, Variant>();
 
-			// TODO: Save the level index
+			levelData.Add("LevelIndex", _levelId);
 
 			// Save all blocks.
 			foreach (KeyValuePair<string, Block> blockEntry in _blocks)
@@ -236,16 +244,15 @@ namespace GA.GArkanoid
 			return success;
 		}
 
-		public bool Load(Godot.Collections.Dictionary<string, Variant> saveData)
+		public bool Load(Godot.Collections.Dictionary<string, Variant> levelData)
 		{
 			bool success = true;
-			if (saveData == null || !saveData.ContainsKey("Level"))
+			if (levelData == null)
 			{
 				GD.PushError("No level save data found.");
 				return false;
 			}
 
-			var levelData = (Godot.Collections.Dictionary<string, Variant>)saveData["Level"];
 			foreach (var blockEntry in _blocks)
 			{
 				Block block = blockEntry.Value;
@@ -257,8 +264,8 @@ namespace GA.GArkanoid
 				}
 			}
 
-			Ball.Load(saveData);
-			Paddle.Load(saveData);
+			Ball.Load(levelData);
+			Paddle.Load(levelData);
 
 			return success;
 		}
