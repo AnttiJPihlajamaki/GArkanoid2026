@@ -27,6 +27,7 @@ _levelBlockMapping = ExtResource("2_d3u4r")
 position = Vector2(353, 289)
 _speed = 150.0
 _controlMode = 1
+ID = "bd3cbcb8-9d69-47df-87cc-05ee17fa1a4a"
 
 [node name="Bounds" type="Node2D" parent="." unique_id=961954500]
 
@@ -105,6 +106,7 @@ shape = SubResource("RectangleShape2D_1vj35")
 
 [node name="Ball" parent="." unique_id=1546247495 instance=ExtResource("8_etd3f")]
 position = Vector2(273, 196)
+ID = "967dcbf0-ebe9-4874-8487-f4d1325adc6b"
 
 [node name="ScorePrint" type="Node" parent="." unique_id=1091563225]
 script = ExtResource("7_4nh8f")

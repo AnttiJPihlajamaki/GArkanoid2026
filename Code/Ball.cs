@@ -1,9 +1,11 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 namespace GA.GArkanoid
 {
-	public partial class Ball : CharacterBody2D
+	[Tool]
+	public partial class Ball : CharacterBody2D, ISaveable
 	{
 		[Export] private float _speed = 10;
 		[Export] private Vector2 _direction = Vector2.Zero;
@@ -18,10 +20,67 @@ namespace GA.GArkanoid
 			get { return !_direction.IsZeroApprox(); }
 		}
 
+		[Export]
+		public string ID { get; set; } = null;
+
 		public void Launch(Vector2 direction)
 		{
 			_direction = direction.Normalized();
 			Velocity = _direction * _speed;
+		}
+
+		public bool Load(Dictionary<string, Variant> saveData)
+		{
+			if (saveData == null || !saveData.ContainsKey(ID))
+			{
+				GD.PushError($"No save data found for the Ball with ID: {ID}");
+				return false;
+			}
+
+			var ballData = (Dictionary<string, Variant>)saveData[ID];
+			if (ballData == null)
+			{
+				GD.PrintErr($"Invalid save data for the Ball with ID: {ID}");
+				return false;
+			}
+
+			bool success = ballData.ContainsKey("PositionX")
+				&& ballData.ContainsKey("PositionY")
+				&& ballData.ContainsKey("VelocityX")
+				&& ballData.ContainsKey("VelocityY");
+
+			if (success)
+			{
+				float x = (float)ballData["PositionX"];
+				float y = (float)ballData["PositionY"];
+				GlobalPosition = new Vector2(x, y);
+
+				float velocityX = (float)ballData["VelocityX"];
+				float velocityY = (float)ballData["VelocityY"];
+				Velocity = new Vector2(velocityX, velocityY);
+
+				_direction = Velocity.Normalized();
+			}
+
+			return success;
+		}
+
+		public bool Save(ref Dictionary<string, Variant> saveData)
+		{
+			if (saveData == null)
+			{
+				GD.PushWarning("Save data was null. This may be a bug!");
+				saveData = new Dictionary<string, Variant>();
+			}
+
+			var ballData = new Dictionary<string, Variant>();
+			ballData["PositionX"] = GlobalPosition.X;
+			ballData["PositionY"] = GlobalPosition.Y;
+			ballData["VelocityX"] = Velocity.X;
+			ballData["VelocityY"] = Velocity.Y;
+
+			saveData[ID] = ballData;
+			return true;
 		}
 
 		/// <summary>

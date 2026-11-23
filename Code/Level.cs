@@ -51,7 +51,7 @@ namespace GA.GArkanoid
 		}
 
 		[Export]
-		public string ID { get; set; } = new System.Guid().ToString();
+		public string ID { get; set; } = Guid.NewGuid().ToString();
 
 		override public void _EnterTree()
 		{
@@ -206,8 +206,8 @@ namespace GA.GArkanoid
 				}
 			}
 
-			// TODO: Save the ball.
-			// TODO: Save the paddle.
+			Ball.Save(ref saveData);
+			Paddle.Save(ref saveData);
 
 			saveData["Level"] = levelData;
 
@@ -235,7 +235,8 @@ namespace GA.GArkanoid
 				}
 			}
 
-			// TODO: Load ball and paddle.
+			Ball.Load(saveData);
+			Paddle.Load(saveData);
 
 			return success;
 		}
