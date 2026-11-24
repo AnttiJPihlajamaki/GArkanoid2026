@@ -4,7 +4,6 @@ using System;
 
 namespace GA.GArkanoid
 {
-	[Tool]
 	public partial class Paddle : CharacterBody2D, ISaveable
 	{
 		public enum ControlMode

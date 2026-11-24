@@ -4,7 +4,6 @@ using System;
 
 namespace GA.GArkanoid
 {
-	[Tool]
 	public partial class Ball : CharacterBody2D, ISaveable
 	{
 		[Export] private float _speed = 10;
