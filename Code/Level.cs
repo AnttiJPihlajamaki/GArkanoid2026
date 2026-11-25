@@ -95,6 +95,7 @@ namespace GA.GArkanoid
 				GD.PushError("No EffectPlayer found fron the scene.");
 			}
 
+			// A bit hacky way of loading the level. It works though :)
 			Godot.Collections.Dictionary<string, Variant> loadData = GameManager.Instance.SaveSystem.LatestLoadData;
 			Godot.Collections.Dictionary<string, Variant> levelData = null;
 			if (loadData != null)
