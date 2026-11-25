@@ -19,5 +19,10 @@ namespace GA.GArkanoid
 
 			return _blockMapping[levelId - 1];
 		}
+
+		public bool IsLastLevel(int index)
+		{
+			return index >= _blockMapping.Count;
+		}
 	}
 }

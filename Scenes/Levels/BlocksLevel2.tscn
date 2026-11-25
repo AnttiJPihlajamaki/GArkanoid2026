@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://cy4gemmuq84j5"]
+
+[ext_resource type="PackedScene" uid="uid://clwra7gx5pngn" path="res://Scenes/Levels/BaseBlockLayout.tscn" id="1_teaot"]
+[ext_resource type="PackedScene" uid="uid://c5wgx2ovvneti" path="res://Scenes/Levels/BlueBlock.tscn" id="2_prrta"]
+[ext_resource type="PackedScene" uid="uid://bhvaeq7ckej4" path="res://Scenes/Levels/GreenBlock.tscn" id="3_qgefj"]
+[ext_resource type="PackedScene" uid="uid://387n0gqwlx23" path="res://Scenes/Levels/RedBlock.tscn" id="4_32iam"]
+
+[node name="BlockLayout" unique_id=1592701796 instance=ExtResource("1_teaot")]
+
+[node name="G" type="Node2D" parent="." index="0" unique_id=343879498]
+position = Vector2(88, -43)
+
+[node name="Block4" parent="G" index="0" unique_id=286569435 instance=ExtResource("2_prrta")]
+position = Vector2(216, 134)
+ID = "e341660e-5c00-4b12-9fe2-9181b73e0e9d"
+
+[node name="Block12" parent="G" index="1" unique_id=949162408 instance=ExtResource("2_prrta")]
+position = Vector2(120, 262)
+ID = "3d45bc9f-f27c-4402-b553-327dc8dfe972"
+
+[node name="Block5" parent="G" index="2" unique_id=1176649537 instance=ExtResource("3_qgefj")]
+position = Vector2(183, 102)
+ID = "22b7d29b-b103-4438-9f89-876578ca1ff3"
+
+[node name="Block11" parent="G" index="3" unique_id=1116337874 instance=ExtResource("3_qgefj")]
+position = Vector2(87, 198)
+ID = "32325088-86fb-4485-9168-57f79c90b313"
+
+[node name="Block13" parent="G" index="4" unique_id=1489415293 instance=ExtResource("3_qgefj")]
+position = Vector2(185, 197)
+ID = "db14cba9-4ed1-4cc5-98f4-9d2a6e6b6285"
+
+[node name="Block7" parent="G" index="5" unique_id=751933562 instance=ExtResource("4_32iam")]
+position = Vector2(119, 102)
+ID = "2793bd97-bba2-42c5-9f58-3c5ddc98a691"
+
+[node name="Block15" parent="G" index="6" unique_id=1946062295 instance=ExtResource("4_32iam")]
+position = Vector2(87, 230)
+ID = "f439e1fc-6e11-4598-a7b4-ac045cee771b"
+
+[node name="Block8" parent="G" index="7" unique_id=1384858457 instance=ExtResource("2_prrta")]
+position = Vector2(87, 134)
+ID = "588fff76-aa75-406f-983c-fc3f243b19a2"
+
+[node name="Block16" parent="G" index="8" unique_id=280280136 instance=ExtResource("2_prrta")]
+position = Vector2(216, 230)
+ID = "be534cce-6d85-4ae8-a81f-d226e4cf1142"
+
+[node name="Block9" parent="G" index="9" unique_id=839283378 instance=ExtResource("4_32iam")]
+position = Vector2(184, 262)
+ID = "4a1479ea-6bfe-4721-bc04-03d479b1bb14"
+
+[node name="Block10" parent="G" index="10" unique_id=2038260319 instance=ExtResource("4_32iam")]
+position = Vector2(87, 166)
+ID = "21cb5365-dcf2-4d4f-a679-4b98a87c5ce1"
+
+[node name="A" type="Node2D" parent="." index="1" unique_id=1292414318]
+position = Vector2(-5, -11)
+
+[node name="Block" parent="A" index="0" unique_id=979159999 instance=ExtResource("2_prrta")]
+position = Vector2(542, 134)
+ID = "23ce42a0-7b95-4bca-b1de-b76b4c611a98"
+
+[node name="Block7" parent="A" index="1" unique_id=1046042860 instance=ExtResource("2_prrta")]
+position = Vector2(411, 232)
+ID = "4a25bac2-0976-4f8e-b89e-9878feddaf56"
+
+[node name="Block8" parent="A" index="2" unique_id=1411365644 instance=ExtResource("2_prrta")]
+position = Vector2(542, 232)
+ID = "f7006722-3046-470b-ae5c-c919e1e398e8"
+
+[node name="Block6" parent="A" index="3" unique_id=830296066 instance=ExtResource("2_prrta")]
+position = Vector2(411, 134)
+ID = "c0cde56e-dbfa-42e7-a018-abb0cba380f1"
+
+[node name="Block9" parent="A" index="4" unique_id=1129008382 instance=ExtResource("2_prrta")]
+position = Vector2(477, 182)
+ID = "9491eea7-03e2-4b58-bbe8-68c2fa86306f"
+
+[node name="Block2" parent="A" index="5" unique_id=235790523 instance=ExtResource("3_qgefj")]
+position = Vector2(444, 102)
+ID = "76b7a1a2-a520-47e8-a588-45bb34d76e47"
+
+[node name="Block3" parent="A" index="6" unique_id=1273240065 instance=ExtResource("4_32iam")]
+position = Vector2(508, 102)
+ID = "e6eb123d-4df9-41bc-80f4-0cde1eb041cc"
+
+[node name="Block4" parent="A" index="7" unique_id=871853942 instance=ExtResource("4_32iam")]
+position = Vector2(411, 199)
+ID = "0b3db83b-5c30-4be2-b576-2cfd6b5908f7"
+
+[node name="Block5" parent="A" index="8" unique_id=1534701630 instance=ExtResource("4_32iam")]
+position = Vector2(542, 199)
+ID = "af44cfd7-1402-4cdb-b315-87d4515dd772"
+
+[node name="Block14" parent="A" index="9" unique_id=63153569 instance=ExtResource("3_qgefj")]
+position = Vector2(411, 166)
+ID = "872756a5-48dc-4f2a-b020-10c717530447"
+
+[node name="Block15" parent="A" index="10" unique_id=104986777 instance=ExtResource("3_qgefj")]
+position = Vector2(542, 166)
+ID = "f6ba44a4-025a-4205-8ede-6921df8395ab"
+
+[node name="Block10" parent="A" index="11" unique_id=1804869054 instance=ExtResource("2_prrta")]
+position = Vector2(475, 70)
+ID = "7ea5bf84-7b45-43a8-a420-577536db6cb7"
